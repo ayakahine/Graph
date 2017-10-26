@@ -5,7 +5,7 @@ from random import *
 import random
 from operator import itemgetter
 
-
+'''
 def subtract_degrees(degree_sequence):
    degree_sequence[:] = [x - 2 for x in degree_sequence]
    degree_sequence[0] = degree_sequence[0] + 1
@@ -35,7 +35,7 @@ def first_iteration_connected_path(g, degree_sequence):
    print("\n")
 
 
-'''def calculate_size_of_sampling(degree_sequence):
+def calculate_size_of_sampling(degree_sequence):
    fraction_factor = 0.3
    C = sum(degree_sequence)
    size_of_sampling = C * fraction_factor
