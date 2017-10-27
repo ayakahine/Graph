@@ -1,9 +1,9 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-import itertools as it
 from random import *
 import random
 from operator import itemgetter
+#from functools import reduce
 
 '''
 def subtract_degrees(degree_sequence):
@@ -53,28 +53,46 @@ def calculate_number_of_nodes_in_left(degree_sequence, C):
    print(degree_sequence[i-1])
 
 
-def tree_path(g):
+def tree_path(g, degree_sequence):
    list_of_nodes = list(g.nodes)
    random.shuffle(list_of_nodes)
-   print(list_of_nodes)
-   g.add_edge(list_of_nodes[0], list_of_nodes[1])
-   list_of_nodes_temp = []
-   for i, node in enumerate(list_of_nodes):
+   print('The list of all nodes: ', list_of_nodes)
+   print('The degree sequence', degree_sequence)
+
+   zipped_list = list(zip(degree_sequence, list_of_nodes))
+   print('The zipped list : ', zipped_list)
+
+   g.add_edge(zipped_list[0][1], zipped_list[1][1])
+
+   list_of_nodes_temp = list(zip([], []))
+   for i, (degree, node) in enumerate(zipped_list):
+      d = zipped_list[i][0]
+      n = zipped_list[i][1]
+      zipped_list.pop(i)
+      zipped_list.insert(i, (d - 1, n))
       if(i == 0 or i == 1):
-         list_of_nodes_temp.append(list_of_nodes[i])
+         list_of_nodes_temp.append((zipped_list[i][0], zipped_list[i][1]))
          continue
       elif(i == len(list_of_nodes) - 1):
-         g.add_edge(random.choice(list_of_nodes_temp), list_of_nodes[i])
+         random_node = random.choice(list_of_nodes_temp)
+         g.add_edge(random_node[1], zipped_list[i][1])
+
+         #degree_sequence_after[] -= 1
+
          break
       else:
-         g.add_edge(random.choice(list_of_nodes_temp), list_of_nodes[i])
-         list_of_nodes_temp.append(list_of_nodes[i])
+         random_node = random.choice(list_of_nodes_temp)
+         g.add_edge(random_node[1], zipped_list[i][1])
+
+         #degree_sequence_after[] -= 1
+         list_of_nodes_temp.append((degree_sequence[i], list_of_nodes[i]))
+   print(zipped_list)
+
 
 g = nx.Graph()
 g.add_nodes_from(range(1,8))
-#degree_sequence = [3, 5, 2, 3, 2, 4, 3]
-#first_iteration_connected_path(g, degree_sequence)
-tree_path(g)
+degree_sequence = [3, 5, 2, 3, 2, 4, 3]
+tree_path(g, degree_sequence)
 
 #C = sum(degree_sequence)
 #calculate_number_of_nodes_in_left(degree_sequence, C)
