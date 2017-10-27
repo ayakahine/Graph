@@ -47,7 +47,7 @@ def calculate_number_of_nodes_in_left(degree_sequence, C):
    summation = 0
    for i, degree in enumerate(degree_sequence):
       summation += degree
-      if(summation >= 0.5 * C):
+      if(summation >= 0.3 * C):
          break
 
    print(degree_sequence[i-1])
@@ -76,15 +76,22 @@ def tree_path(g, degree_sequence):
       elif(i == len(list_of_nodes) - 1):
          random_node = random.choice(list_of_nodes_temp)
          g.add_edge(random_node[1], zipped_list[i][1])
-
-         #degree_sequence_after[] -= 1
-
+         index = list_of_nodes_temp.index(random_node)
+         d1 = zipped_list[index][0]
+         n1 = zipped_list[index][1]
+         zipped_list.pop(index)
+         zipped_list.insert(index, (d1 - 1, n1))
          break
       else:
          random_node = random.choice(list_of_nodes_temp)
          g.add_edge(random_node[1], zipped_list[i][1])
 
-         #degree_sequence_after[] -= 1
+         index = list_of_nodes_temp.index(random_node)
+         d1 = zipped_list[index][0]
+         n1 = zipped_list[index][1]
+         zipped_list.pop(index)
+         zipped_list.insert(index, (d1 - 1, n1))
+
          list_of_nodes_temp.append((degree_sequence[i], list_of_nodes[i]))
    print(zipped_list)
 
