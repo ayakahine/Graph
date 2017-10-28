@@ -75,7 +75,13 @@ def tree_path(g, degree_sequence):
          continue
       elif(i == len(list_of_nodes) - 1):
          random_node = random.choice(list_of_nodes_temp)
+         while True :
+            if(random_node[0] <= 0):
+               random_node = random.choice(list_of_nodes_temp)
+            else:
+               break
          g.add_edge(random_node[1], zipped_list[i][1])
+
          index = list_of_nodes_temp.index(random_node)
          d1 = zipped_list[index][0]
          n1 = zipped_list[index][1]
@@ -84,6 +90,11 @@ def tree_path(g, degree_sequence):
          break
       else:
          random_node = random.choice(list_of_nodes_temp)
+         while True :
+            if(random_node[0] <= 0):
+               random_node = random.choice(list_of_nodes_temp)
+            else:
+               break
          g.add_edge(random_node[1], zipped_list[i][1])
 
          index = list_of_nodes_temp.index(random_node)
