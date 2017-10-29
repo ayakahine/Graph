@@ -3,44 +3,14 @@ import matplotlib.pyplot as plt
 from random import *
 import random
 from operator import itemgetter
-#from functools import reduce
-
-'''
-def subtract_degrees(degree_sequence):
-   degree_sequence[:] = [x - 2 for x in degree_sequence]
-   degree_sequence[0] = degree_sequence[0] + 1
-   degree_sequence[-1] = degree_sequence[-1] + 1
 
 
-
-def first_iteration_connected_path(g, degree_sequence):
-
-   list_of_nodes = list(g.nodes)
-   random.shuffle(list_of_nodes)
-   print(list_of_nodes)
-   g.add_path(list_of_nodes)
-   subtract_degrees(degree_sequence)
-   print(degree_sequence)
-
-   degree_sequence, list_of_nodes = zip(*((x, y) for x, y in zip(degree_sequence, list_of_nodes) if x != 0))
-   for a ,b in zip(degree_sequence, list_of_nodes):
-       print(a, b)
-
-   print("\n")
-
-   initial_indexDegree_list = sorted(zip(degree_sequence, list_of_nodes), key=itemgetter(0), reverse=True)
-   #print(initial_indexDegree_list)
-   for a,b in initial_indexDegree_list:
-       print(a, b)
-   print("\n")
-
-
-def calculate_size_of_sampling(degree_sequence):
+def calculate_size_of_sampling(zipped_list):
    fraction_factor = 0.3
-   C = sum(degree_sequence)
+   C = sum([pair[0] for pair in zipped_list])
    size_of_sampling = C * fraction_factor
-   print(size_of_sampling)
-'''
+   return size_of_sampling
+
 
 def calculate_number_of_nodes_in_left(degree_sequence, C):
    #sum(degree_sequence) <= 0.3 * C
@@ -49,8 +19,7 @@ def calculate_number_of_nodes_in_left(degree_sequence, C):
       summation += degree
       if(summation >= 0.3 * C):
          break
-
-   print(degree_sequence[i-1])
+   #print(degree_sequence[i-1])
 
 
 def tree_path(g, degree_sequence):
@@ -75,11 +44,9 @@ def tree_path(g, degree_sequence):
          continue
       elif(i == len(list_of_nodes) - 1):
          random_node = random.choice(list_of_nodes_temp)
-         #index = list_of_nodes_temp.index(random_node)
 
          while (random_node[0] == 0):
             random_node = random.choice(list_of_nodes_temp)
-            #list_of_nodes_temp.pop(index)
 
          g.add_edge(random_node[1], zipped_list[i][1])
          index_node = list_of_nodes_temp.index(random_node)
@@ -90,11 +57,9 @@ def tree_path(g, degree_sequence):
          break
       else:
          random_node = random.choice(list_of_nodes_temp)
-         #index = list_of_nodes_temp.index(random_node)
 
          while(random_node[0] == 0):
             random_node = random.choice(list_of_nodes_temp)
-            #list_of_nodes_temp.pop(index)
 
          g.add_edge(random_node[1], zipped_list[i][1])
          index_node = list_of_nodes_temp.index(random_node)
@@ -105,15 +70,20 @@ def tree_path(g, degree_sequence):
          list_of_nodes_temp.pop(index_node)
          list_of_nodes_temp.insert(index_node, (d1 - 1, n1))
          list_of_nodes_temp.append((zipped_list[i][0], zipped_list[i][1]))
-   print("The zipped after: ", zipped_list)
-
+   return zipped_list
 
 g = nx.Graph()
-g.add_nodes_from(range(1,8))
-degree_sequence = [3, 5, 2, 3, 2, 4, 3]
-tree_path(g, degree_sequence)
+g.add_nodes_from(range(1,10))
+degree_sequence = [3, 5, 2, 3, 2, 4, 3, 3, 4]
+zipped_list = tree_path(g, degree_sequence)
+print("The zipped after: ", zipped_list)
+zipped_list[:] = [(degree, node) for (degree, node) in zipped_list if degree != 0]
+print("Zipped non-zero:  ", zipped_list)
+zipped_list.sort(key= lambda zipped_list: zipped_list[0])
+print("The sorted zipped:", zipped_list)
 
-#C = sum(degree_sequence)
+size_of_sampling = calculate_size_of_sampling(zipped_list)
+print(size_of_sampling)
 #calculate_number_of_nodes_in_left(degree_sequence, C)
 nx.draw(g, node_color="cyan", with_labels="true")
 plt.show()
