@@ -75,36 +75,37 @@ def tree_path(g, degree_sequence):
          continue
       elif(i == len(list_of_nodes) - 1):
          random_node = random.choice(list_of_nodes_temp)
-         while True :
-            if(random_node[0] <= 0):
-               random_node = random.choice(list_of_nodes_temp)
-            else:
-               break
-         g.add_edge(random_node[1], zipped_list[i][1])
+         #index = list_of_nodes_temp.index(random_node)
 
-         index = list_of_nodes_temp.index(random_node)
-         d1 = zipped_list[index][0]
-         n1 = zipped_list[index][1]
-         zipped_list.pop(index)
-         zipped_list.insert(index, (d1 - 1, n1))
+         while (random_node[0] == 0):
+            random_node = random.choice(list_of_nodes_temp)
+            #list_of_nodes_temp.pop(index)
+
+         g.add_edge(random_node[1], zipped_list[i][1])
+         index_node = list_of_nodes_temp.index(random_node)
+         d1 = zipped_list[index_node][0]
+         n1 = zipped_list[index_node][1]
+         zipped_list.pop(index_node)
+         zipped_list.insert(index_node, (d1 - 1, n1))
          break
       else:
          random_node = random.choice(list_of_nodes_temp)
-         while True :
-            if(random_node[0] <= 0):
-               random_node = random.choice(list_of_nodes_temp)
-            else:
-               break
+         #index = list_of_nodes_temp.index(random_node)
+
+         while(random_node[0] == 0):
+            random_node = random.choice(list_of_nodes_temp)
+            #list_of_nodes_temp.pop(index)
+
          g.add_edge(random_node[1], zipped_list[i][1])
-
-         index = list_of_nodes_temp.index(random_node)
-         d1 = zipped_list[index][0]
-         n1 = zipped_list[index][1]
-         zipped_list.pop(index)
-         zipped_list.insert(index, (d1 - 1, n1))
-
-         list_of_nodes_temp.append((degree_sequence[i], list_of_nodes[i]))
-   print(zipped_list)
+         index_node = list_of_nodes_temp.index(random_node)
+         d1 = zipped_list[index_node][0]
+         n1 = zipped_list[index_node][1]
+         zipped_list.pop(index_node)
+         zipped_list.insert(index_node, (d1 - 1, n1))
+         list_of_nodes_temp.pop(index_node)
+         list_of_nodes_temp.insert(index_node, (d1 - 1, n1))
+         list_of_nodes_temp.append((zipped_list[i][0], zipped_list[i][1]))
+   print("The zipped after: ", zipped_list)
 
 
 g = nx.Graph()
