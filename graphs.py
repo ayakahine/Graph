@@ -4,6 +4,7 @@ from random import *
 import random
 from operator import itemgetter
 from math import ceil
+import itertools
 
 
 def calculate_size_of_sampling(zipped_list, fraction_factor):
@@ -48,6 +49,7 @@ def tree_path(g, degree_sequence):
             random_node = random.choice(list_of_nodes_temp)
 
          g.add_edge(random_node[1], zipped_list[i][1])
+         print("edge: " , random_node[1], "," , zipped_list[i][1])
          index_node = list_of_nodes_temp.index(random_node)
          d1 = zipped_list[index_node][0]
          n1 = zipped_list[index_node][1]
@@ -61,6 +63,7 @@ def tree_path(g, degree_sequence):
             random_node = random.choice(list_of_nodes_temp)
 
          g.add_edge(random_node[1], zipped_list[i][1])
+         print("edge: ", random_node[1], ", ", zipped_list[i][1])
          index_node = list_of_nodes_temp.index(random_node)
          d1 = zipped_list[index_node][0]
          n1 = zipped_list[index_node][1]
@@ -84,23 +87,49 @@ zipped_list.sort(key= lambda zipped_list: zipped_list[0], reverse=True)
 print("The sorted zipped:", zipped_list)
 
 size_of_sampling = calculate_size_of_sampling(zipped_list, fraction_factor)
-print(size_of_sampling)
+print("Size of sampling: ", size_of_sampling)
 NL, summation = calculate_number_of_nodes_in_left(zipped_list, size_of_sampling)
-print(NL)
-print(summation)
+print("number in left: ", NL)
+print("summation: ", summation)
 
 random_sample = random.sample(zipped_list, summation)
 random_sample_nodes = []
 for (degree, node) in random_sample:
    random_sample_nodes.append(node)
-print("Ranom sample: ", random_sample_nodes)
+print("Random sample: ", random_sample_nodes)
 
+start = 0
+deg = 0
+for i, (degree, node) in enumerate(zipped_list):
+   deg += degree
+   for random_node in random_sample_nodes[start:deg]:
+      d = zipped_list[i][0]
+      n = zipped_list[i][1]
+      g.add_edge(random_node, n)
+      print("edge: ", random_node, ", ", n)
 
-'''for i, (degree, node) in enumerate(zipped_list):
-   print(i, degree, node)
-   for j, random_node in enumerate(random_sample_nodes):
-      if(j < NL):
-         g.add_edge(node, random_node)
+      zipped_list.pop(i)
+      zipped_list.insert(i, (d - 1, n))
+      start += 1
+
+      for (degree1, node1) in zipped_list:
+         if (random_node == node1):
+            index = zipped_list.index((degree1, node1))
+            zipped_list.pop(index)
+            zipped_list.insert(index, (degree1 - 1, node1))
+            break
+
+print(zipped_list)
 '''
+if(summation >= size_of_sampling):
+   if(i == 0):
+      for j, random_node in enumerate(random_sample_nodes):
+         if (j < summation):
+            g.add_edge(node, random_node)
+            
+g.add_edge(node, random_node)
+print("edge: ", node, ", ", random_node)
+'''
+
 nx.draw(g, node_color="cyan", with_labels="true")
 plt.show()
