@@ -3,23 +3,22 @@ import matplotlib.pyplot as plt
 from random import *
 import random
 from operator import itemgetter
+from math import ceil
 
 
-def calculate_size_of_sampling(zipped_list):
-   fraction_factor = 0.3
+def calculate_size_of_sampling(zipped_list, fraction_factor):
    C = sum([pair[0] for pair in zipped_list])
-   size_of_sampling = C * fraction_factor
+   size_of_sampling = ceil(C * fraction_factor)
    return size_of_sampling
 
 
-def calculate_number_of_nodes_in_left(degree_sequence, C):
-   #sum(degree_sequence) <= 0.3 * C
+def calculate_number_of_nodes_in_left(zipped_list, size_of_sampling):
    summation = 0
-   for i, degree in enumerate(degree_sequence):
+   for i, (degree,node) in enumerate(zipped_list):
       summation += degree
-      if(summation >= 0.3 * C):
+      if(summation >= size_of_sampling):
          break
-   #print(degree_sequence[i-1])
+   return i, summation
 
 
 def tree_path(g, degree_sequence):
@@ -72,18 +71,36 @@ def tree_path(g, degree_sequence):
          list_of_nodes_temp.append((zipped_list[i][0], zipped_list[i][1]))
    return zipped_list
 
+#main program
+fraction_factor = 0.3
 g = nx.Graph()
-g.add_nodes_from(range(1,10))
-degree_sequence = [3, 5, 2, 3, 2, 4, 3, 3, 4]
+g.add_nodes_from(range(1,11))
+degree_sequence = [3, 8, 2, 3, 2, 4, 3, 2, 4, 2]
 zipped_list = tree_path(g, degree_sequence)
 print("The zipped after: ", zipped_list)
 zipped_list[:] = [(degree, node) for (degree, node) in zipped_list if degree != 0]
 print("Zipped non-zero:  ", zipped_list)
-zipped_list.sort(key= lambda zipped_list: zipped_list[0])
+zipped_list.sort(key= lambda zipped_list: zipped_list[0], reverse=True)
 print("The sorted zipped:", zipped_list)
 
-size_of_sampling = calculate_size_of_sampling(zipped_list)
+size_of_sampling = calculate_size_of_sampling(zipped_list, fraction_factor)
 print(size_of_sampling)
-#calculate_number_of_nodes_in_left(degree_sequence, C)
+NL, summation = calculate_number_of_nodes_in_left(zipped_list, size_of_sampling)
+print(NL)
+print(summation)
+
+random_sample = random.sample(zipped_list, summation)
+random_sample_nodes = []
+for (degree, node) in random_sample:
+   random_sample_nodes.append(node)
+print("Ranom sample: ", random_sample_nodes)
+
+
+'''for i, (degree, node) in enumerate(zipped_list):
+   print(i, degree, node)
+   for j, random_node in enumerate(random_sample_nodes):
+      if(j < NL):
+         g.add_edge(node, random_node)
+'''
 nx.draw(g, node_color="cyan", with_labels="true")
 plt.show()
