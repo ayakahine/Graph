@@ -32,7 +32,7 @@ def tree_path(g, degree_sequence):
    print('The zipped list : ', zipped_list)
 
    g.add_edge(zipped_list[0][1], zipped_list[1][1])
-
+   print("edge: ", zipped_list[0][1], ",", zipped_list[1][1])
    list_of_nodes_temp = list(zip([], []))
    for i, (degree, node) in enumerate(zipped_list):
       d = zipped_list[i][0]
@@ -86,50 +86,47 @@ print("Zipped non-zero:  ", zipped_list)
 zipped_list.sort(key= lambda zipped_list: zipped_list[0], reverse=True)
 print("The sorted zipped:", zipped_list)
 
-size_of_sampling = calculate_size_of_sampling(zipped_list, fraction_factor)
-print("Size of sampling: ", size_of_sampling)
-NL, summation = calculate_number_of_nodes_in_left(zipped_list, size_of_sampling)
-print("number in left: ", NL)
-print("summation: ", summation)
 
-random_sample = random.sample(zipped_list, summation)
-random_sample_nodes = []
-for (degree, node) in random_sample:
-   random_sample_nodes.append(node)
-print("Random sample: ", random_sample_nodes)
 
-start = 0
-deg = 0
-for i, (degree, node) in enumerate(zipped_list):
-   deg += degree
-   for random_node in random_sample_nodes[start:deg]:
-      d = zipped_list[i][0]
-      n = zipped_list[i][1]
-      g.add_edge(random_node, n)
-      print("edge: ", random_node, ", ", n)
 
-      zipped_list.pop(i)
-      zipped_list.insert(i, (d - 1, n))
-      start += 1
+while (zipped_list != []):
+   size_of_sampling = calculate_size_of_sampling(zipped_list, fraction_factor)
+   print("Size of sampling: ", size_of_sampling)
+   NL, summation = calculate_number_of_nodes_in_left(zipped_list, size_of_sampling)
+   print("number in left: ", NL)
+   print("summation: ", summation)
 
-      for (degree1, node1) in zipped_list:
-         if (random_node == node1):
-            index = zipped_list.index((degree1, node1))
-            zipped_list.pop(index)
-            zipped_list.insert(index, (degree1 - 1, node1))
-            break
+   random_sample = random.sample(zipped_list, summation)
+   random_sample_nodes = []
+   for (degree, node) in random_sample:
+      random_sample_nodes.append(node)
+   print("Random sample: ", random_sample_nodes)
 
-print(zipped_list)
-'''
-if(summation >= size_of_sampling):
-   if(i == 0):
-      for j, random_node in enumerate(random_sample_nodes):
-         if (j < summation):
-            g.add_edge(node, random_node)
-            
-g.add_edge(node, random_node)
-print("edge: ", node, ", ", random_node)
-'''
+   start = 0
+   deg = 0
+   for i, (degree, node) in enumerate(zipped_list):
+      deg += degree
+      for random_node in random_sample_nodes[start:deg]:
+         d = zipped_list[i][0]
+         n = zipped_list[i][1]
+         g.add_edge(random_node, n)
+         print("edge: ", random_node, ", ", n)
+
+         zipped_list.pop(i)
+         zipped_list.insert(i, (d - 1, n))
+         start += 1
+
+         for (degree1, node1) in zipped_list:
+            if (random_node == node1):
+               index = zipped_list.index((degree1, node1))
+               zipped_list.pop(index)
+               zipped_list.insert(index, (degree1 - 1, node1))
+               break
+
+   print(zipped_list)
+   zipped_list[:] = [(degree, node) for (degree, node) in zipped_list if degree > 0]
+   zipped_list.sort(key= lambda zipped_list: zipped_list[0], reverse=True)
+   print(zipped_list)
 
 nx.draw(g, node_color="cyan", with_labels="true")
 plt.show()
