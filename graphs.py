@@ -96,7 +96,10 @@ while (zipped_list != []):
    print("number in left: ", NL)
    print("summation: ", summation)
 
-   random_sample = random.sample(zipped_list, summation)
+   if(len(zipped_list) < summation):
+      random_sample = random.sample(zipped_list, len(zipped_list))
+   else:
+      random_sample = random.sample(zipped_list, summation)
    random_sample_nodes = []
    for (degree, node) in random_sample:
       random_sample_nodes.append(node)
