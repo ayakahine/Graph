@@ -1,5 +1,3 @@
-import itertools
-
 list_permutations = []
 
 
@@ -9,12 +7,12 @@ def generate_sequences(n, seq):
         if summation % 2 == 0:
             list_permutations.append(p)
     print(list_permutations)
-    for pair in list_permutations:
-        for j in list_permutations:
-            if j != pair and j in list(itertools.permutations(pair)):
-                list_permutations.remove(j)
-    print(list_permutations)
     print(len(list_permutations))
+
+    list_permutations_sorted = [sorted(tuple(x)) for x in list_permutations]
+    unique_permutation_lists = [list(x) for x in set(tuple(x) for x in list_permutations_sorted)]
+    print(unique_permutation_lists)
+    print len(unique_permutation_lists)
 
 
 number_of_nodes = input("Give the number of nodes?")
