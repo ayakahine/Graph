@@ -1,3 +1,6 @@
+import itertools
+
+
 list_permutations = []
 
 
