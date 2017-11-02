@@ -17,8 +17,5 @@ def generate_sequences(n, seq):
     print(len(list_permutations))
 
 
-while True:
-    number_of_nodes = input("Give the number of nodes?")
-    if number_of_nodes == "exit":
-        break
-    generate_sequences(number_of_nodes, range(1, number_of_nodes))
+number_of_nodes = input("Give the number of nodes?")
+generate_sequences(number_of_nodes, range(1, number_of_nodes))
