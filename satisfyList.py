@@ -33,5 +33,7 @@ def is_satisfiable(number_of_nodes, list1):
 
 
 number_of_nodes = input("Give the number of nodes: ")
-list1 = input("Give a degree sequence of to check if it is satisfiable or not:")
+list1 = []
+while (number_of_nodes != len(list1)):
+    list1 = input("Give a degree sequence of to check if it is satisfiable or not:")
 is_satisfiable(number_of_nodes, list1)
