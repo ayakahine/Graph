@@ -1,27 +1,6 @@
 import itertools
 import numpy as np
 import networkx as nx
-import matplotlib.pyplot as plt
-
-list_permutations = []
-
-
-def generate_sequences(n, seq):
-    for p in itertools.product(seq, repeat=n):
-        summation = sum(p)
-        if summation % 2 == 0:
-            list_permutations.append(list(p))
-    print(list_permutations)
-    print(len(list_permutations))
-
-
-    new_list = []
-    for a, degree_sequence_list in enumerate(list_permutations):
-        temp = list_permutations[a]
-        if is_connected_graph(number_of_nodes, degree_sequence_list) == "graph is connected":
-            new_list.append(temp)
-    print new_list
-    print len(new_list)
 
 
 def is_connected_graph(number_nodes, degree_sequence_list):
@@ -45,11 +24,31 @@ def is_connected_graph(number_nodes, degree_sequence_list):
             zipped_list.insert(j, (d - 1, n))
             g.add_edge(node, n)
         list3, list4 = zip(*zipped_list)
-        if list3 == [0] * number_nodes:
+        if list(list3) == [0] * number_nodes:
             if nx.is_connected(g):
+                # nx.draw(g, with_labels="true")
+                # plt.show()
                 return "graph is connected"
 
 
+def generate_connected_graph_lists(n, seq):
+    list_permutations = []
+    for p in itertools.product(seq, repeat=n):
+        summation = sum(p)
+        if summation % 2 == 0:
+            list_permutations.append(list(p))
+    print(list_permutations)
+    print(len(list_permutations))
+
+    new_list = []
+    for a, list1 in enumerate(list_permutations):
+        temp = list_permutations[a]
+        if is_connected_graph(number_of_nodes, list1) == "graph is connected":
+            new_list.append(temp)
+    print new_list
+    print len(new_list)
+
+
 # main program
-number_of_nodes = input("Give the number of nodes?")
-generate_sequences(number_of_nodes, range(1, number_of_nodes))
+number_of_nodes = input("Give the number of nodes: ")
+generate_connected_graph_lists(number_of_nodes, range(1, number_of_nodes))
