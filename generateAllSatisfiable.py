@@ -41,4 +41,8 @@ def generate_graph(node_lists, zipped_list):
 
 degree_sequence = input("Give a degree sequence to generate all possible graphs:")
 number_of_nodes = len(degree_sequence)
-print generate_all_graphs(number_of_nodes, degree_sequence)
+summation = sum(degree_sequence)
+if summation % 2 == 0:
+    generate_all_graphs(number_of_nodes, degree_sequence)
+else:
+    print "degree sequence is not satisfiable"
