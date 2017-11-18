@@ -2,10 +2,11 @@ import numpy as np
 import networkx as nx
 import itertools
 
+list_graphs = []
+
 
 def generate_all_graphs(number_nodes, degree_sequence_list):
     degree_sequence_list = sorted(degree_sequence_list, reverse=True)
-    list_graphs = []
 
     list_of_nodes = (range(1, number_nodes + 1))
     zipped_list = list(zip(degree_sequence_list, list_of_nodes))
@@ -19,26 +20,23 @@ def generate_all_graphs(number_nodes, degree_sequence_list):
         if count < degree:
             return "list is unsatisfiable"
         combination_list = list(itertools.combinations(list2[i:], degree))
-
-       
-        for j, node2 in enumerate(combination_list):
-            for index, z in enumerate(zipped_list):
-                if z[1] == node2:
-                    d = z[0]
-                    n = z[1]
-                    zipped_list.pop(index)
-                    zipped_list.insert(index, (d - 1, n))
+        for j, node_lists in enumerate(combination_list):
             if i == 0:
                 g = nx.Graph()
-            else:
-                g = nx.Graph(list_graphs[])
+                list_graphs.append(g)
+
             for k in range(1, degree + 1):
-                g.add_edge(node, node2[k])
-            list_graphs.append(g)
+                list_graphs[j].add_edge(node, node_lists[k])
+            generate_graph(node_lists, zipped_list)
 
 
-def generate_graph(combination_list, zipped_list):
-
+def generate_graph(node_lists, zipped_list):
+    for index, z in enumerate(zipped_list):
+        if z[1] == node_lists[1]:
+            d = z[0]
+            n = z[1]
+            zipped_list.pop(index)
+            zipped_list.insert(index, (d - 1, n))
 
 
 degree_sequence = input("Give a degree sequence to generate all possible graphs:")
