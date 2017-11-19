@@ -7,36 +7,43 @@ list_graphs = []
 
 def generate_all_graphs(number_nodes, degree_sequence_list):
     degree_sequence_list = sorted(degree_sequence_list, reverse=True)
-
     list_of_nodes = (range(1, number_nodes + 1))
     zipped_list = list(zip(degree_sequence_list, list_of_nodes))
+    degree_to_zero(zipped_list)
+
+
+def degree_to_zero(zipped_list):
     for i, num in enumerate(zipped_list):
         degree = zipped_list[i][0]
         node = zipped_list[i][1]
         zipped_list.pop(i)
         zipped_list.insert(i, (0, node))
         list1, list2 = zip(*zipped_list)
+
+        temp = zipped_list
         count = np.count_nonzero(list1)
-        if count < degree:
-            return "list is unsatisfiable"
-        combination_list = list(itertools.combinations(list2[i:], degree))
+        if count > 1:
+            combination_list = list(itertools.combinations(list2[i:], degree))
+        else:
+            continue
         for j, node_lists in enumerate(combination_list):
-            if i == 0:
-                g = nx.Graph()
-                list_graphs.append(g)
+            g = nx.Graph()
 
-            for k in range(1, degree + 1):
-                list_graphs[j].add_edge(node, node_lists[k])
-            generate_graph(node_lists, zipped_list)
+            for k in range(0, degree):
+                g.add_edge(node, node_lists[k])
+                generate_graph(node_lists[k], temp)
+            degree_to_zero(temp)
+            list_graphs.append(g)
 
 
-def generate_graph(node_lists, zipped_list):
-    for index, z in enumerate(zipped_list):
-        if z[1] == node_lists[1]:
-            d = z[0]
-            n = z[1]
-            zipped_list.pop(index)
-            zipped_list.insert(index, (d - 1, n))
+def generate_graph(node_list, temp):
+        for index, z in enumerate(temp):
+            if z[1] == node_list:
+                d = z[0]
+                n = z[1]
+                temp.pop(index)
+                temp.insert(index, (d - 1, n))
+        return temp
 
 
 degree_sequence = input("Give a degree sequence to generate all possible graphs:")
