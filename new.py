@@ -36,7 +36,10 @@ def f(zipped_list):
             list_graphs[i].add_edge(node, t[0][j])
         comb_list = t[0]
         zipped_comb = t[1]
-        # zipped_temp.pop()
+        zipped_comb = [(d - 1, n) if n in list(comb_list) else (d, n) for (d, n) in zipped_comb]
+        zipped_temp.pop(i)
+        zipped_temp.insert(i, (comb_list, zipped_comb))
+    print zipped_temp
     print [g.edges for g in list_graphs]
 
     return zipped_list, combination_list
