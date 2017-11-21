@@ -53,11 +53,10 @@ def f(zipped_list):
 
     for k in zipped_temp_list2:
         f(k)
-    # return zipped_list, combination_list
 
 
 # degree_sequence = input("Give a degree sequence to generate all possible graphs:")
-degree_sequence = [3, 3, 2, 1, 1]
+degree_sequence = [2, 2, 2, 2]
 number_of_nodes = len(degree_sequence)
 summation = sum(degree_sequence)
 if summation % 2 == 0:
