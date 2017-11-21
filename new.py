@@ -8,13 +8,17 @@ def generate_all_graphs(number_nodes, degree_sequence_list):
     list_of_nodes = (range(1, number_nodes + 1))
     zipped_list = list(zip(degree_sequence_list, list_of_nodes))
     print zipped_list
-    zipped_list = [(d, n) for (d, n) in zipped_list if d != 0]
-    a, b = f(zipped_list)
-    print "zipped list: ", a
-    print "combination list: ", b
+    # zipped_list = [(d, n) for (d, n) in zipped_list if d != 0]
+    # a, b = f(zipped_list)
+    # print "zipped list: ", a
+    # print "combination list: ", b
+    print f(zipped_list)
 
 
 def f(zipped_list):
+    if not zipped_list:
+        return 1
+    zipped_list = [(d, n) for (d, n) in zipped_list if d != 0]
     list_graphs = []
     degree = zipped_list[0][0]
     node = zipped_list[0][1]
@@ -26,9 +30,9 @@ def f(zipped_list):
     # zipped_list.insert(0, (0, node))
     combination_list = list(itertools.combinations(list(list2)[1:], degree))
     temp = [zipped_list for _ in range(len(combination_list))]
-    print temp
+    # print temp
     zipped_temp = zip(combination_list, temp)
-    print zipped_temp
+    print "zipped_temp ", zipped_temp
     for i, t in enumerate(zipped_temp):
         g = nx.Graph()
         list_graphs.append(g)
@@ -39,10 +43,17 @@ def f(zipped_list):
         zipped_comb = [(d - 1, n) if n in list(comb_list) else (d, n) for (d, n) in zipped_comb]
         zipped_temp.pop(i)
         zipped_temp.insert(i, (comb_list, zipped_comb))
-    print zipped_temp
+    print "zipped_ temp ", zipped_temp
+
+    zipped_temp_list1, zipped_temp_list2 = zip(*zipped_temp)
+    print zipped_temp_list2
+    zipped_temp_list2 = [[k for k in l if k[0] != 0] for l in zipped_temp_list2]
+    print zipped_temp_list2
     print [g.edges for g in list_graphs]
 
-    return zipped_list, combination_list
+    for k in zipped_temp_list2:
+        f(k)
+    # return zipped_list, combination_list
 
 
 # degree_sequence = input("Give a degree sequence to generate all possible graphs:")
