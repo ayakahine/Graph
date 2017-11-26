@@ -38,13 +38,12 @@ def f(zipped_list):
         comb_list = t[0]
         zipped_comb = t[1]
         zipped_comb = [(d - 1, n) if n in list(comb_list) else (d, n) for (d, n) in zipped_comb]
+        zipped_comb = [(d, n) for (d, n) in zipped_comb if d != 0]
         zipped_temp.pop(i)
         zipped_temp.insert(i, (comb_list, zipped_comb))
     print "zipped_ temp ", zipped_temp
 
     zipped_temp_list1, zipped_temp_list2 = zip(*zipped_temp)
-    print zipped_temp_list2
-    zipped_temp_list2 = [[k for k in l if k[0] != 0] for l in zipped_temp_list2]
     print zipped_temp_list2
     for k in zipped_temp_list2:
         f(k)
