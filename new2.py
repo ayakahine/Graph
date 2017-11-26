@@ -9,6 +9,7 @@ def generate_all_graphs(number_nodes, degree_sequence_list):
     print zipped_list
     list_edges_combinations = []
     print f(zipped_list, list_edges_combinations)
+    print list_edges_combinations
 
 
 def f(zipped_list, list_edges_combinations):
@@ -21,30 +22,32 @@ def f(zipped_list, list_edges_combinations):
     zipped_temp = zip(combination_list, temp)
     print "zipped_temp ", zipped_temp
     for i, t in enumerate(zipped_temp):
-        list_edges = []
-        for j in range(0, degree):
-            list_edges.append((node, t[0][j]))
         comb_list = t[0]
         zipped_comb = t[1]
         zipped_comb = [(d - 1, n) if n in list(comb_list) else (d, n) for (d, n) in zipped_comb]
         zipped_comb = [(d, n) for (d, n) in zipped_comb if d != 0]
         zipped_temp.pop(i)
         zipped_temp.insert(i, (comb_list, zipped_comb))
-        list_edges_combinations.append(list_edges)
     print "zipped_ temp ", zipped_temp
 
-    zipped_temp_list1, zipped_temp_list2 = zip(*zipped_temp)
-    print zipped_temp_list2
-    for i, k in enumerate(zipped_temp_list2):
-        if not k:
+    for i, k in enumerate(zipped_temp):
+        if not k[1]:
+            list_edges = []
+            for j in range(0, degree):
+                list_edges.append((node, k[0][j]))
+            list_edges_combinations.append(list_edges)
             continue
         else:
-            count = len(zipped_temp_list2[i][1:])
-            degree1 = zipped_temp_list2[i][0][0]
+            count = len(k[1][1:])
+            degree1 = k[1][0][0]
             if count < degree1:
                 continue
             else:
-                f(k, list_edges_combinations)
+                list_edges = []
+                for j in range(0, degree):
+                    list_edges.append((node, k[0][j]))
+                list_edges_combinations.append(list_edges)
+                f(k[1], list_edges_combinations)
 
 
 # degree_sequence = input("Give a degree sequence to generate all possible graphs:")
