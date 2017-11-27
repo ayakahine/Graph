@@ -1,18 +1,16 @@
 import itertools
 
-list_graphs = []
-
 
 def generate_all_graphs(number_nodes, degree_sequence_list):
     list_of_nodes = range(1, number_nodes + 1)
     zipped_list = list(zip(degree_sequence_list, list_of_nodes))
     print zipped_list
-    list_edges_combinations = []
-    print f(zipped_list, list_edges_combinations)
-    print list_edges_combinations
+    list_graphs = []
+    print f(zipped_list, list_graphs)
+    print list_graphs
 
 
-def f(zipped_list, list_edges_combinations):
+def f(zipped_list, list_graphs):
     degree = zipped_list[0][0]
     node = zipped_list[0][1]
     list1, list2 = zip(*zipped_list)
@@ -35,8 +33,8 @@ def f(zipped_list, list_edges_combinations):
             list_edges = []
             for j in range(0, degree):
                 list_edges.append((node, k[0][j]))
-            list_edges_combinations.append(list_edges)
-            continue
+            list_graphs.append(list_edges)
+            list_graphs.append([])
         else:
             count = len(k[1][1:])
             degree1 = k[1][0][0]
@@ -46,8 +44,8 @@ def f(zipped_list, list_edges_combinations):
                 list_edges = []
                 for j in range(0, degree):
                     list_edges.append((node, k[0][j]))
-                list_edges_combinations.append(list_edges)
-                f(k[1], list_edges_combinations)
+                list_graphs.append(list_edges)
+                f(k[1], list_graphs)
 
 
 # degree_sequence = input("Give a degree sequence to generate all possible graphs:")
