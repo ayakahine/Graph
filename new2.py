@@ -66,6 +66,18 @@ def combine(list_edges_combinations, list_graphs):
         list_graphs[i] = list_graphs[last_index][:g[0][1]] + list_graphs[i]
     print list_graphs
 
+    list_graphs = [[f for (f, g) in list] for list in list_graphs]
+    print list_graphs
+
+    all_possible_graphs = []
+    for list in list_graphs:
+        a = []
+        for l in list:
+            a.extend(l)
+        print a
+        all_possible_graphs.append(a)
+
+    print all_possible_graphs
 
 # degree_sequence = input("Give a degree sequence to generate all possible graphs:")
 degree_sequence = [3, 2, 1, 2, 2]
