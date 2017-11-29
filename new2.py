@@ -2,13 +2,12 @@ import itertools
 from itertools import groupby
 from operator import itemgetter
 
-list_graphs = []
-
 
 def generate_all_graphs(number_nodes, degree_sequence_list):
     list_of_nodes = range(1, number_nodes + 1)
     zipped_list = list(zip(degree_sequence_list, list_of_nodes))
     print zipped_list
+    list_graphs = []
     list_edges_combinations = []
     print f(zipped_list, list_edges_combinations, level=0)
     print list_edges_combinations
@@ -66,18 +65,18 @@ def combine(list_edges_combinations, list_graphs):
         list_graphs[i] = list_graphs[last_index][:g[0][1]] + list_graphs[i]
     print list_graphs
 
-    list_graphs = [[f for (f, g) in list] for list in list_graphs]
+    list_graphs = [[c for (c, d) in list1] for list1 in list_graphs]
     print list_graphs
 
     all_possible_graphs = []
-    for list in list_graphs:
+    for list1 in list_graphs:
         a = []
-        for l in list:
+        for l in list1:
             a.extend(l)
-        print a
         all_possible_graphs.append(a)
 
     print all_possible_graphs
+
 
 # degree_sequence = input("Give a degree sequence to generate all possible graphs:")
 degree_sequence = [3, 2, 1, 2, 2]
