@@ -79,5 +79,7 @@ summation = sum(degree_sequence)
 if summation % 2 == 0:
     all_possible_graphs = generate_all_graphs(number_of_nodes, degree_sequence)
     print all_possible_graphs
+    if not all_possible_graphs:
+        print "degree sequence is not satisfiable"
 else:
     print "degree sequence is not satisfiable"
