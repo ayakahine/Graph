@@ -6,12 +6,10 @@ from operator import itemgetter
 def generate_all_graphs(number_nodes, degree_sequence_list):
     list_of_nodes = range(1, number_nodes + 1)
     zipped_list = list(zip(degree_sequence_list, list_of_nodes))
-    print zipped_list
     list_graphs = []
     list_edges_combinations = []
-    print f(zipped_list, list_edges_combinations, level=0)
-    print list_edges_combinations
-    combine(list_edges_combinations, list_graphs)
+    f(zipped_list, list_edges_combinations, level=0)
+    print combine(list_edges_combinations, list_graphs)
 
 
 def f(zipped_list, list_edges_combinations, level):
@@ -22,7 +20,6 @@ def f(zipped_list, list_edges_combinations, level):
     combination_list = list(itertools.combinations(list(list2)[1:], degree))
     temp = [zipped_list for _ in range(len(combination_list))]
     zipped_temp = zip(combination_list, temp)
-    print "zipped_temp ", zipped_temp
     for i, t in enumerate(zipped_temp):
         comb_list = t[0]
         zipped_comb = t[1]
@@ -30,13 +27,12 @@ def f(zipped_list, list_edges_combinations, level):
         zipped_comb = [(d, n) for (d, n) in zipped_comb if d != 0]
         zipped_temp.pop(i)
         zipped_temp.insert(i, (comb_list, zipped_comb))
-    print "zipped_ temp ", zipped_temp
     for i, k in enumerate(zipped_temp):
         if not k[1]:
             list_edges = []
             for j in range(0, degree):
                 list_edges.append((node, k[0][j]))
-                list_edges_combinations.append((list_edges, level))
+            list_edges_combinations.append((list_edges, level))
         else:
             count = len(k[1][1:])
             degree1 = k[1][0][0]
@@ -54,7 +50,6 @@ def combine(list_edges_combinations, list_graphs):
     for key, group in groupby(enumerate(list_edges_combinations), lambda (index, item): index - item[1]):
         group = map(itemgetter(1), group)
         list_graphs.append(group)
-    print list_graphs
 
     for i, g in enumerate(list_graphs):
         last_index = -1
@@ -63,19 +58,17 @@ def combine(list_edges_combinations, list_graphs):
                 if list_graphs[j][0][1] == 0:
                     last_index = j
         list_graphs[i] = list_graphs[last_index][:g[0][1]] + list_graphs[i]
-    print list_graphs
 
     list_graphs = [[c for (c, d) in list1] for list1 in list_graphs]
-    print list_graphs
 
-    all_possible_graphs = []
+    all_possible_graphs1 = []
     for list1 in list_graphs:
         a = []
         for l in list1:
             a.extend(l)
-        all_possible_graphs.append(a)
+        all_possible_graphs1.append(a)
 
-    print all_possible_graphs
+    return all_possible_graphs1
 
 
 # degree_sequence = input("Give a degree sequence to generate all possible graphs:")
