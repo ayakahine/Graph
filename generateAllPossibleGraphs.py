@@ -1,6 +1,7 @@
 import itertools
 from itertools import groupby
 from operator import itemgetter
+from generateSortingDegreeDistribution import degree_sequence
 
 
 def generate_all_graphs(number_nodes, degree_sequence_list):
@@ -9,7 +10,8 @@ def generate_all_graphs(number_nodes, degree_sequence_list):
     list_graphs = []
     list_edges_combinations = []
     f(zipped_list, list_edges_combinations, level=0)
-    print combine(list_edges_combinations, list_graphs)
+    all_graphs = combine(list_edges_combinations, list_graphs)
+    return all_graphs
 
 
 def f(zipped_list, list_edges_combinations, level):
@@ -71,11 +73,11 @@ def combine(list_edges_combinations, list_graphs):
     return all_possible_graphs1
 
 
-# degree_sequence = input("Give a degree sequence to generate all possible graphs:")
-degree_sequence = [3, 2, 1, 2, 2]
+# print degree_sequence
 number_of_nodes = len(degree_sequence)
 summation = sum(degree_sequence)
 if summation % 2 == 0:
-    generate_all_graphs(number_of_nodes, degree_sequence)
+    all_possible_graphs = generate_all_graphs(number_of_nodes, degree_sequence)
+    print all_possible_graphs
 else:
     print "degree sequence is not satisfiable"
