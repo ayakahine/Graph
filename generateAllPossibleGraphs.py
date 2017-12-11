@@ -1,7 +1,7 @@
 import itertools
 from itertools import groupby
 from operator import itemgetter
-from generateSortingDegreeDistribution import degree_sequence
+# from generateSortingDegreeDistribution import degree_sequence
 
 
 def generate_all_graphs(number_nodes, degree_sequence_list):
@@ -10,6 +10,7 @@ def generate_all_graphs(number_nodes, degree_sequence_list):
     list_graphs = []
     list_edges_combinations = []
     f(zipped_list, list_edges_combinations, level=0)
+    print list_edges_combinations
     all_graphs = combine(list_edges_combinations, list_graphs)
     return all_graphs
 
@@ -30,6 +31,8 @@ def f(zipped_list, list_edges_combinations, level):
         zipped_temp.pop(i)
         zipped_temp.insert(i, (comb_list, zipped_comb))
     for i, k in enumerate(zipped_temp):
+        print "i = ", i, "k = ", k
+        print "degree = ", degree, "node = ", node
         if not k[1]:
             list_edges = []
             for j in range(0, degree):
@@ -39,12 +42,21 @@ def f(zipped_list, list_edges_combinations, level):
             count = len(k[1][1:])
             degree1 = k[1][0][0]
             if count < degree1:
+                print "BBB", list_edges_combinations
+                if len(zipped_temp) == 1:
+                    for key, group in groupby(enumerate(list_edges_combinations), lambda (index, item): index - item[1]):
+                        group = map(itemgetter(1), group)
+                    for g in group:
+                        list_edges_combinations.remove(g)
+                print "CCC", list_edges_combinations
                 continue
             else:
                 list_edges = []
                 for j in range(0, degree):
                     list_edges.append((node, k[0][j]))
+                    print "List_EDges", list_edges
                 list_edges_combinations.append((list_edges, level))
+                print "AAA", list_edges_combinations
                 f(k[1], list_edges_combinations, level + 1)
 
 
@@ -52,6 +64,7 @@ def combine(list_edges_combinations, list_graphs):
     for key, group in groupby(enumerate(list_edges_combinations), lambda (index, item): index - item[1]):
         group = map(itemgetter(1), group)
         list_graphs.append(group)
+    print list_graphs
 
     for i, g in enumerate(list_graphs):
         last_index = -1
@@ -73,13 +86,12 @@ def combine(list_edges_combinations, list_graphs):
     return all_possible_graphs1
 
 
-# print degree_sequence
+# degree_sequence = [1, 1, 1, 3]
+degree_sequence = [3, 2, 1, 2, 2]
 number_of_nodes = len(degree_sequence)
 summation = sum(degree_sequence)
 if summation % 2 == 0:
     all_possible_graphs = generate_all_graphs(number_of_nodes, degree_sequence)
     print all_possible_graphs
-    if not all_possible_graphs:
-        print "degree sequence is not satisfiable"
 else:
     print "degree sequence is not satisfiable"
