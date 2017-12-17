@@ -2,6 +2,7 @@ import itertools
 from itertools import groupby
 from operator import itemgetter
 # from generateSortingDegreeDistribution import degree_sequence
+import sys
 
 
 def generate_all_graphs(number_nodes, degree_sequence_list):
@@ -36,10 +37,8 @@ def f(zipped_list, list_edges_combinations, level):
             list_edges.append((node, k[0][j]))
         if not k[1]:
             list_edges_combinations.append((list_edges, level, "S"))
-            # continue
             print list_edges_combinations
-            return "yes"
-
+            sys.exit("yes")
         else:
             count = len(k[1][1:])
             degree1 = k[1][0][0]
@@ -86,11 +85,9 @@ def my_function(deg_sequence):
     else:
         return "no"
 
-def printing():
-    return "yes"
 
 # degree_sequence =[3, 3, 1, 1]
-#degree_sequence =[3, 2, 1, 2, 2]
-degree_sequence = [1, 1, 1, 3]
-# degree_sequence = [2, 2, 3, 3]
+degree_sequence =[3, 2, 1, 2, 2]
+#degree_sequence = [1, 1, 1, 3]
+#degree_sequence = [2, 2, 3, 3]
 print my_function(degree_sequence)
