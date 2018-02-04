@@ -68,7 +68,7 @@ def satisfiable(degree_distribution):
         print "P"
         return
     if degree_distribution.count(n - 2) == 2 and degree_distribution.count(n - 3) and degree_distribution.count(1) == 2\
-            and degree_distribution.count(3) != 2 and degree_distribution.count(n - 3) != 3 and n > 3:
+            and degree_distribution.count(3) != 2 and degree_distribution.count(n - 3) != 3 and n > 4:
         print "Q"
         return
     if degree_distribution.count(n - 2) == 3 and degree_distribution.count(1) == 1 and degree_distribution.count(2) > 1:
